@@ -1,0 +1,4 @@
+rootProject.name = "MAarPublish"
+include ':app'
+include ':myhttpkt'
+include ':myhttpjava'

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<metadata modelVersion="1.1.0">
+  <groupId>com.mei.http</groupId>
+  <artifactId>myhttp</artifactId>
+  <version>1.0.7-SNAPSHOT</version>
+  <versioning>
+    <snapshot>
+      <timestamp>20211008.114709</timestamp>
+      <buildNumber>1</buildNumber>
+    </snapshot>
+    <lastUpdated>20211008114709</lastUpdated>
+    <snapshotVersions>
+      <snapshotVersion>
+        <classifier>sources</classifier>
+        <extension>jar</extension>
+        <value>1.0.7-20211008.114709-1</value>
+        <updated>20211008114709</updated>
+      </snapshotVersion>
+      <snapshotVersion>
+        <extension>aar</extension>
+        <value>1.0.7-20211008.114709-1</value>
+        <updated>20211008114709</updated>
+      </snapshotVersion>
+      <snapshotVersion>
+        <extension>pom</extension>
+        <value>1.0.7-20211008.114709-1</value>
+        <updated>20211008114709</updated>
+      </snapshotVersion>
+    </snapshotVersions>
+  </versioning>
+</metadata>

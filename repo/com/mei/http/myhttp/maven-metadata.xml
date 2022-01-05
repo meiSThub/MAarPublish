@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<metadata>
+  <groupId>com.mei.http</groupId>
+  <artifactId>myhttp</artifactId>
+  <versioning>
+    <latest>1.0.8-SNAPSHOT</latest>
+    <release>1.0.4</release>
+    <versions>
+      <version>1.0.0-SNAPSHOT</version>
+      <version>1.0.4-SNAPSHOT</version>
+      <version>1.0.5-SNAPSHOT</version>
+      <version>1.0.4</version>
+      <version>1.0.6-SNAPSHOT</version>
+      <version>1.0.7-SNAPSHOT</version>
+      <version>1.0.8-SNAPSHOT</version>
+    </versions>
+    <lastUpdated>20211013031115</lastUpdated>
+  </versioning>
+</metadata>

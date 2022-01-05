@@ -1,0 +1,106 @@
+// apply plugin: "kotlin-android"
+apply plugin: "maven-publish"
+
+task sourceJar(type: Jar) {
+    from android.sourceSets.main.java.srcDirs
+    archiveClassifier = "sources"
+}
+afterEvaluate {// components.release 只有在配置完成之后，才能拿到值
+    publishing {
+        // 配置maven 仓库
+        repositories { RepositoryHandler handler ->
+            handler.mavenLocal()
+            handler.maven {
+                url "${rootDir}/repo"
+            }
+            // 仓库用户名密码
+            // handler.maven { MavenArtifactRepository mavenArtifactRepository ->
+            //     // maven 仓库地址
+            //     url 'http://10.0.192.56:8081/repository/core/'
+            //     // 访问仓库的 账号和密码
+            //     credentials {
+            //         username = "meiTest"
+            //         password = "123456"
+            //     }
+            // }
+        }
+        publications { PublicationContainer publicationContainer ->
+            // debug(MavenPublication) {
+            //     afterEvaluate { artifact(tasks.getByName("bundleReleaseAar")) }
+            //     // artifact "$buildDir/outputs/aar/${project.name}java-release.aar"
+            //     // artifact sourceJar
+            //     groupId = "com.mei.http"
+            //     artifactId = "myhttp"
+            //     version = "1.0.4-SNAPSHOT"
+            // }
+            // release(MavenPublication) {
+            //     afterEvaluate { artifact(tasks.getByName("bundleReleaseAar")) }
+            //     // artifact "$buildDir/outputs/aar/${project.name}java-release.aar"
+            //     // artifact sourceJar
+            //     groupId = "com.mei.http"
+            //     artifactId = "myhttp"
+            //     version = "1.0.4"
+            // }
+            maven(MavenPublication) {
+                from components.release
+                // 依赖 bundleReleaseAar 任务，并上传其产出的aar
+                // afterEvaluate { artifact(tasks.getByName("bundleReleaseAar")) }
+                // // 也可以指定上传的AAR包，但是需要先手动生成aar
+                // artifact "$buildDir/outputs/aar/${project.name}-release.aar"
+                println "project=${project.name}"
+                println "componects=${project.getComponents()},${components}"
+                // from project.getComponents().findByName("${flavor}Release")
+                // artifact sourceJar
+                groupId = "com.mei.http"
+                artifactId = "myhttp"
+                version = "1.0.8-SNAPSHOT"
+
+                pom {
+                    name = "Demo"
+                    description = "A demonstration of Maven POM customization"
+                    url = "http://www.example.com/project"
+                    // licenses {
+                    //     license {
+                    //         name = "The Apache License, Version 2.0"
+                    //         url = "http://www.apache.org/licenses/LICENSE-2.0.txt"
+                    //     }
+                    // }
+                    // 开发者信息
+                    // developers {
+                    //     developer {
+                    //         id = "johnd"
+                    //         name = "John Doe"
+                    //         email = "john.doe@example.com"
+                    //     }
+                    // }
+                    // scm {
+                    //     修改成你的Git地址：
+                    //     connection = "scm:svn:http://subversion.example.com/svn/project/trunk/"
+                    //     developerConnection =
+                    //             "scm:svn:https://subversion.example.com/svn/project/trunk/"
+                    //     分支地址：
+                    //     url = "http://subversion.example.com/svn/project/trunk/"
+                    // }
+                    // pom文件中声明依赖，从而传递到使用方
+                    // withXml {
+                    //     def dependenciesNode = asNode().appendNode('dependencies')
+                    //     configurations.implementation.allDependencies.each {
+                    //         // 避免出现空节点或 artifactId=unspecified 的节点
+                    //         if (it.group != null && (it.name != null && "unspecified" != it.name) &&
+                    //                 it.version != null) {
+                    //             println "dependency=${it.toString()}"
+                    //             def dependencyNode = dependenciesNode.appendNode('dependency')
+                    //             dependencyNode.appendNode('groupId', it.group)
+                    //             dependencyNode.appendNode('artifactId', it.name)
+                    //             dependencyNode.appendNode('version', it.version)
+                    //             dependencyNode.appendNode('scope', 'implementation')
+                    //         }
+                    //     }
+                    // }
+                }
+            }
+
+        }
+
+    }
+}

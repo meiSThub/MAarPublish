@@ -1,0 +1,66 @@
+// apply plugin: "maven-publish"
+apply plugin: "maven"
+
+def localDefaultRepo = "file://" +
+        new File(System.getProperty("user.home"), '.m2/repository').absolutePath
+
+uploadArchives {
+    repositories.mavenDeployer {
+        // println "path=${uri('~/.m2/repository')}"
+        // repository(url: uri('/.m2/repository'))// 无效
+        println "localDefaultRepo=$localDefaultRepo"
+        repository(url: uri(localDefaultRepo))
+        // repository(url: "http://10.0.192.56:8081/repository/core/") {
+        //     authentication(userName: "meiTest"
+        //             , password: "123456")
+        // }
+        // repository(url: uri('../repo'))
+        pom.project {
+            groupId "com.mei.http"
+            artifactId "myhttp"
+            version "1.0.4-SNAPSHOT"
+            packaging "aar"
+        }
+    }
+}
+
+task uploadSourceJar(type: Jar) {
+    doLast {
+        // 定义一个标志 (生成的jar包后面加上sources, 如: myhttp-1.0.2-20210927.115550-2-sources.jar)
+        classifier = 'sources'
+        println "srcDirs=${project.android.sourceSets.main.java.sourceFiles}"
+        // 指定源码文件路径
+        from project.android.sourceSets.main.java.sourceFiles
+    }
+}
+
+task androidJavadocs(type: Javadoc) {
+    source = project.android.sourceSets.main.java.srcDirs
+    // 需要生成 doc 的 代码路径
+    classpath += project.files(project.android.getBootClasspath().join(File.pathSeparator))
+    failOnError = false // javadoc 解析错误时task 不会异常停止
+}
+
+// 解决 JavaDoc 中文注释生成失败的问题
+project.tasks.withType(Javadoc) {
+    options.addStringOption('Xdoclint:none', '-quiet')
+    options.addStringOption('encoding', 'UTF-8')
+    options.addStringOption('charSet', 'UTF-8')
+}
+
+task androidJavadocsJar(type: Jar, dependsOn: androidJavadocs) {
+    //archiveFileName	The archive name. If the name has not been explicitly set
+    // , the pattern for the name is:
+    //[archiveBaseName]-[archiveAppendix]-[archiveVersion]-[archiveClassifier].[archiveExtension]
+    // 存档名称的分类器部分，名称后面加的类别区分的名字.e.g. xxxx-javadoc.jar。
+    classifier = 'javadoc'
+    from androidJavadocs.destinationDir
+}
+
+//
+artifacts {
+    // aar包增加注释
+    archives uploadSourceJar
+    // aar包增加注释
+    // archives androidJavadocsJar
+}
